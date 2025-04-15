@@ -483,5 +483,23 @@ describe('I18nLint lib', function() {
 
     expect(errors).to.have.length(1);
   });
+
+  it('should ignore Angular control flow syntax and catch hardcoded strings', function() {
+    var errors = I18nLint('test/fixtures/angular_control_flow.html');
+    expect(errors).to.have.length(4);
+
+    expect(errors[0]).to.have.property('reason').that.equals('Hardcoded <h1> tag');
+    expect(errors[0].evidence.toString()).to.equal('/(Hello, \\{\\{user\\.name\\}\\})/');
+
+    expect(errors[1]).to.have.property('reason').that.equals('Hardcoded <button> tag');
+    expect(errors[1].evidence.toString()).to.equal('/(Update profile)/');
+
+    expect(errors[2]).to.have.property('reason').that.equals('Hardcoded <h2> tag');
+    expect(errors[2].evidence.toString()).to.equal('/(hardcodedValue)/');
+
+    expect(errors[3]).to.have.property('reason').that.equals('Hardcoded <span> tag');
+    expect(errors[3].evidence.toString()).to.equal('/(override)/');
+  });
+
 });
 
